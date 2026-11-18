@@ -13,6 +13,10 @@ PulseChat allows users to join chat rooms, exchange messages instantly, and upvo
 - **Responsive Interface:** Dark-themed React frontend.
 - **WebSocket Communication:** Persistent connection between frontend and backend.
 
+## 📸 Application Preview
+
+![PulseChat Real-Time Chat](screenshots/realtime-chat.png)
+
 ## 🛠️ Tech Stack
 
 ### Backend

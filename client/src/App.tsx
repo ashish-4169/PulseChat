@@ -10,6 +10,9 @@ interface ChatMessage {
   roomId: string;
 }
 
+const WS_URL =
+  import.meta.env.VITE_WS_URL || 'ws://localhost:8080';
+
 function App() {
   const [name, setName] = useState('Ashish');
   const [roomId, setRoomId] = useState('room1');
@@ -31,11 +34,9 @@ function App() {
     }
 
     setMessages([]);
+    setConnected(false);
 
-    const socket = new WebSocket(
-      'ws://localhost:8080/',
-      'echo-protocol'
-    );
+    const socket = new WebSocket(WS_URL);
 
     socketRef.current = socket;
 
@@ -53,34 +54,40 @@ function App() {
     };
 
     socket.onmessage = (event) => {
-      const data = JSON.parse(event.data);
+      try {
+        const data = JSON.parse(event.data);
 
-      if (data.type === 'ADD_CHAT') {
-        setMessages(prev => [
-          ...prev,
-          {
-            chatId: data.payload.chatId,
-            name: data.payload.name,
-            message: data.payload.message,
-            upvotes: data.payload.upvotes,
-            roomId: data.payload.roomId
-          }
-        ]);
-      }
+        if (data.type === 'ADD_CHAT') {
+          setMessages(prev => [
+            ...prev,
+            {
+              chatId: data.payload.chatId,
+              name: data.payload.name,
+              message: data.payload.message,
+              upvotes: data.payload.upvotes,
+              roomId: data.payload.roomId
+            }
+          ]);
+        }
 
-      if (data.type === 'UPDATE_CHAT') {
-        setMessages(prev =>
-          prev.map(chat =>
-            chat.chatId === data.payload.chatId
-              ? { ...chat, upvotes: data.payload.upvotes }
-              : chat
-          )
-        );
+        if (data.type === 'UPDATE_CHAT') {
+          setMessages(prev =>
+            prev.map(chat =>
+              chat.chatId === data.payload.chatId
+                ? { ...chat, upvotes: data.payload.upvotes }
+                : chat
+            )
+          );
+        }
+      } catch (error) {
+        console.error('Invalid server message:', error);
       }
     };
 
     socket.onclose = () => {
-      setConnected(false);
+      if (socketRef.current === socket) {
+        setConnected(false);
+      }
     };
 
     socket.onerror = () => {
@@ -135,14 +142,17 @@ function App() {
 
         <div className="sidebar-section">
           <p className="section-label">WORKSPACE</p>
+
           <div className="room-item active">
             <span>#</span>
             General
           </div>
+
           <div className="room-item">
             <span>#</span>
             Development
           </div>
+
           <div className="room-item">
             <span>#</span>
             Random
@@ -153,6 +163,7 @@ function App() {
           <div className="avatar">
             {name.charAt(0).toUpperCase()}
           </div>
+
           <div>
             <strong>{name}</strong>
             <p>{connected ? 'Online' : 'Offline'}</p>
@@ -201,7 +212,9 @@ function App() {
             <div className="empty-state">
               <div>💬</div>
               <h2>Welcome to #{roomId}</h2>
-              <p>Start the conversation. Your messages will appear here.</p>
+              <p>
+                Start the conversation. Your messages will appear here.
+              </p>
             </div>
           )}
 
@@ -238,7 +251,10 @@ function App() {
             disabled={!connected}
           />
 
-          <button type="submit" disabled={!connected || !input.trim()}>
+          <button
+            type="submit"
+            disabled={!connected || !input.trim()}
+          >
             Send ↑
           </button>
         </form>

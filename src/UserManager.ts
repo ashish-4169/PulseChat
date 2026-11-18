@@ -1,14 +1,14 @@
-import { connection } from "websocket";
+import WebSocket from "ws";
 import { OutgoingMessage } from "./messages/outgoingMessages";
 
 interface User {
     name: string;
     id: string;
-    conn: connection;
+    conn: WebSocket;
 }
 
 interface Room {
-    users: User[]
+    users: User[];
 }
 
 export class UserManager {
@@ -18,7 +18,7 @@ export class UserManager {
         this.rooms = new Map<string, Room>();
     }
 
-    addUser(name: string, userId: string, roomId: string, socket: connection) {
+    addUser(name: string, userId: string, roomId: string, socket: WebSocket) {
         if (!this.rooms.get(roomId)) {
             this.rooms.set(roomId, {
                 users: []
@@ -31,7 +31,7 @@ export class UserManager {
             conn: socket
         });
 
-        socket.on('close', (reasonCode, description) => {
+        socket.on("close", () => {
             this.removeUser(roomId, userId);
         });
     }
@@ -43,6 +43,10 @@ export class UserManager {
 
         if (room) {
             room.users = room.users.filter(({ id }) => id !== userId);
+
+            if (room.users.length === 0) {
+                this.rooms.delete(roomId);
+            }
         }
     }
 
@@ -67,8 +71,9 @@ export class UserManager {
         }
 
         room.users.forEach(({ conn }) => {
-            console.log("outgoing message " + JSON.stringify(message));
-            conn.sendUTF(JSON.stringify(message));
+            if (conn.readyState === WebSocket.OPEN) {
+                conn.send(JSON.stringify(message));
+            }
         });
     }
 }
