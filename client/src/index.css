@@ -1,0 +1,302 @@
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #0b0d14;
+  color: #f1f2f7;
+  font-family: Inter, Arial, sans-serif;
+}
+
+.app {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 250px;
+  background: #11131d;
+  border-right: 1px solid #252735;
+  padding: 25px 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 55px;
+}
+
+.brand h2 {
+  font-size: 21px;
+  margin: 0;
+}
+
+.brand-icon {
+  background: #7656f6;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-weight: bold;
+  font-size: 22px;
+}
+
+.section-label {
+  font-size: 11px;
+  color: #777b91;
+  letter-spacing: 2px;
+  margin-bottom: 18px;
+}
+
+.room-item {
+  padding: 13px;
+  color: #999db1;
+  border-radius: 8px;
+  margin-bottom: 7px;
+}
+
+.room-item span {
+  margin-right: 12px;
+}
+
+.room-item.active {
+  background: #25213e;
+  color: #a995ff;
+}
+
+.sidebar-bottom {
+  margin-top: auto;
+  border-top: 1px solid #292b39;
+  padding-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar,
+.message-avatar {
+  background: #7656f6;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: bold;
+}
+
+.sidebar-bottom strong {
+  font-size: 14px;
+}
+
+.sidebar-bottom p {
+  margin: 4px 0 0;
+  color: #777b91;
+  font-size: 12px;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.topbar {
+  height: 85px;
+  padding: 18px 35px;
+  border-bottom: 1px solid #252735;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.topbar h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.topbar p {
+  color: #85899d;
+  font-size: 12px;
+  margin: 6px 0 0;
+}
+
+.status {
+  color: #f08b8b;
+  font-size: 13px;
+}
+
+.status span {
+  display: inline-block;
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+  background: #ef6262;
+  margin-right: 8px;
+}
+
+.status.online {
+  color: #54d69a;
+}
+
+.status.online span {
+  background: #54d69a;
+}
+
+.join-box {
+  width: min(400px, calc(100% - 40px));
+  margin: 35px auto 0;
+  padding: 28px;
+  border: 1px solid #303246;
+  background: #151724;
+  border-radius: 16px;
+}
+
+.join-box h2 {
+  margin-top: 0;
+}
+
+.join-box p {
+  color: #9094a8;
+  font-size: 14px;
+  margin-bottom: 25px;
+}
+
+.join-box input,
+.message-form input {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #303246;
+  border-radius: 9px;
+  background: #0e101a;
+  color: white;
+  outline: none;
+  margin-bottom: 13px;
+}
+
+.join-box input:focus,
+.message-form input:focus {
+  border-color: #7656f6;
+}
+
+button {
+  border: none;
+  border-radius: 9px;
+  background: #7656f6;
+  color: white;
+  padding: 13px 20px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #6241df;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.join-box button {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.chat-area {
+  flex: 1;
+  padding: 30px 35px;
+  overflow-y: auto;
+}
+
+.empty-state {
+  text-align: center;
+  margin: 100px auto;
+  color: #85899d;
+}
+
+.empty-state div {
+  font-size: 45px;
+}
+
+.empty-state h2 {
+  color: white;
+}
+
+.message {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 25px;
+}
+
+.message-content strong {
+  font-size: 14px;
+}
+
+.message-content p {
+  margin: 7px 0;
+  color: #c4c6d2;
+  font-size: 14px;
+}
+
+.upvote {
+  padding: 5px 10px;
+  background: #25213e;
+  color: #b5a4ff;
+  font-size: 12px;
+}
+
+.message-form {
+  display: flex;
+  gap: 12px;
+  padding: 20px 35px;
+  border-top: 1px solid #252735;
+}
+
+.message-form input {
+  margin: 0;
+}
+
+.message-form button {
+  min-width: 100px;
+}
+
+@media (max-width: 650px) {
+  .sidebar {
+    width: 75px;
+    padding: 20px 10px;
+  }
+
+  .brand h2,
+  .section-label,
+  .room-item:not(.active),
+  .sidebar-bottom strong,
+  .sidebar-bottom p {
+    display: none;
+  }
+
+  .room-item {
+    font-size: 12px;
+    padding: 10px;
+  }
+
+  .topbar,
+  .chat-area {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .message-form {
+    padding: 15px;
+  }
+}
